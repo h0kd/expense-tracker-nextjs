@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Expense Tracker - Controla tus Gastos
 
-## Getting Started
+Una aplicación web fullstack para registrar, visualizar y exportar tus gastos de manera simple, ordenada y eficiente.
 
-First, run the development server:
+## 🚀 Tecnologías utilizadas
+
+- **Next.js 15** - Framework React de última generación
+- **TailwindCSS 4** - Utilidades CSS para un diseño responsivo rápido
+- **Prisma ORM** - Manejo de base de datos de forma segura y moderna
+- **SQLite** - Base de datos liviana para desarrollo local
+- **Chart.js** - Gráficos interactivos (barras, pastel)
+- **Radix UI** - Diálogos accesibles y minimalistas
+- **XLSX.js** - Exportación de datos a Excel
+
+## ✨ Características principales
+
+- Registrar nuevos gastos (monto, categoría, fecha, descripción)
+- Visualización de gastos mediante gráficos dinámicos
+- Filtros por año, mes y categoría
+- Edición y eliminación de gastos
+- Exportar gastos filtrados a **.xlsx**
+- Diseño completamente responsivo
+- Interfaz minimalista y moderna
+
+## 📸 Capturas de pantalla
+
+![Dashboard principal](./public/dashboard1.png)
+
+![Dashboard tabla](./public/dashboardTable.png)
+
+## 🛠️ Instalación local
+
+1. Clona este repositorio
+
+```bash
+git clone https://github.com/tu-usuario/expense-tracker.git
+cd expense-tracker
+```
+
+2. Instala las dependencias
+
+```bash
+npm install
+```
+
+3. Crea el archivo `.env`
+
+```bash
+DATABASE_URL="file:./dev.db"
+```
+
+4. Ejecuta las migraciones Prisma
+
+```bash
+npx prisma migrate dev --name init
+```
+
+5. Inicia el servidor de desarrollo
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Deploy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Este proyecto está preparado para un deploy inmediato en [Vercel](https://vercel.com/):
 
-## Learn More
+1. Haz login en Vercel y conecta tu repositorio de GitHub.
+2. Añade la variable de entorno `DATABASE_URL` en el panel de Vercel.
+3. ¡Publica tu proyecto con un solo click!
 
-To learn more about Next.js, take a look at the following resources:
+## 📄 Licencia
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Este proyecto es de uso libre para tu portafolio personal o como referencia de desarrollo.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+Construido con pasión por h0kd
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+✨
