@@ -18,12 +18,13 @@ export default function Home() {
   const [gastos, setGastos] = useState<Gasto[]>([]);
   const [filtros, setFiltros] = useState({ anio: "", mes: "", categoria: "" });
 
+  async function fetchGastos() {
+    const res = await fetch("/api/gastos");
+    const data = await res.json();
+    setGastos(data);
+  }
+
   useEffect(() => {
-    async function fetchGastos() {
-      const res = await fetch("/api/gastos");
-      const data = await res.json();
-      setGastos(data);
-    }
     fetchGastos();
   }, []);
 
@@ -134,18 +135,18 @@ export default function Home() {
 
         {/* Gráficos */}
         <div className="lg:col-span-3">
-          <GastosResumen hideFilters />
+          <GastosResumen gastos={gastosFiltrados} />
         </div>
 
         {/* Formulario */}
         <div className="lg:col-span-1">
-          <GastoForm />
+          <GastoForm onSuccess={fetchGastos} />
         </div>
       </div>
 
       {/* Tabla */}
       <div className="max-w-7xl mx-auto">
-        <GastosTable />
+        <GastosTable gastos={gastosFiltrados} />
       </div>
     </main>
   );
