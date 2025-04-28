@@ -1,6 +1,5 @@
-// app/api/gastos/route.ts
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // tu cliente de Prisma
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   const gastos = await prisma.gasto.findMany();
