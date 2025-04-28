@@ -20,7 +20,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // Si quieres forzar siempre dark mode, añade `className="dark"`
     <html lang="en" suppressHydrationWarning className="transition-colors dark">
       <body
         className={`
