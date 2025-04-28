@@ -1,6 +1,6 @@
 # Expense Tracker - Controla tus Gastos
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/h0kd/expense-tracker)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/h0kd/expense-tracker-nextjs)
 
 Una aplicación web fullstack para registrar, visualizar y exportar tus gastos de manera simple, ordenada y eficiente.
 
@@ -36,7 +36,7 @@ Una aplicación web fullstack para registrar, visualizar y exportar tus gastos d
 
 ```bash
 git clone https://github.com/h0kd/expense-tracker-nextjs.git
-cd expense-tracker
+cd expense-tracker-nextjs
 ```
 
 2. Instala las dependencias
@@ -71,7 +71,13 @@ Este proyecto está preparado para un deploy inmediato en [Vercel](https://verce
 
 1. Haz login en Vercel y conecta tu repositorio de GitHub.
 2. Añade la variable de entorno `DATABASE_URL` en el panel de Vercel.
-3. ¡Publica tu proyecto con un solo click!
+3. Importante: este proyecto usa **SQLite** local, por lo que si deseas un deploy funcional deberás conectar una base de datos en la nube (ej: Supabase, PlanetScale, etc.).
+4. Si solo deseas mostrar el proyecto como portafolio, puedes desplegarlo tal como está (funcionará visualmente pero no podrá guardar datos).
+5. ¡Publica tu proyecto con un solo click!
+
+## 📃 Nota importante
+
+> Esta aplicación funciona perfectamente a nivel local. Para uso en producción, se recomienda configurar una base de datos remota y actualizar `DATABASE_URL`.
 
 ## 📄 Licencia
 
@@ -79,4 +85,5 @@ Este proyecto es de uso libre para tu portafolio personal o como referencia de d
 
 ---
 
-Construido con pasión por h0kd ✨
+Construido con pasión por **h0kd** ✨
+
