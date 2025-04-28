@@ -3,8 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function PUT(request: Request) {
   const body = await request.json();
-  const url = new URL(request.url);
-  const id = url.pathname.split("/").pop(); // extraemos el id de la URL
+  const id = getIdFromRequestUrl(request.url);
 
   if (!id) {
     return NextResponse.json({ error: "ID no encontrado" }, { status: 400 });
@@ -24,8 +23,7 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const url = new URL(request.url);
-  const id = url.pathname.split("/").pop(); // extraemos el id
+  const id = getIdFromRequestUrl(request.url);
 
   if (!id) {
     return NextResponse.json({ error: "ID no encontrado" }, { status: 400 });
@@ -36,4 +34,15 @@ export async function DELETE(request: Request) {
   });
 
   return NextResponse.json({ ok: true });
+}
+
+// Función auxiliar para extraer el ID de la URL
+function getIdFromRequestUrl(url: string): string | null {
+  try {
+    const parsedUrl = new URL(url);
+    const parts = parsedUrl.pathname.split("/");
+    return parts[parts.length - 1] || null;
+  } catch (error) {
+    return null;
+  }
 }
