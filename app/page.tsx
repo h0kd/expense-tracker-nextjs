@@ -146,7 +146,7 @@ export default function Home() {
 
       {/* Tabla */}
       <div className="max-w-7xl mx-auto">
-        <GastosTable gastos={gastosFiltrados} />
+        <GastosTable gastos={gastosFiltrados} fetchGastos={fetchGastos} />
       </div>
     </main>
   );

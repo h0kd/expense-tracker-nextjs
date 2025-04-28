@@ -11,6 +11,7 @@ export default function GastoForm({ onSuccess }: { onSuccess?: () => void }) {
     descripcion: "",
   });
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(""); // <--- NUEVO
 
   useEffect(() => {
     setMounted(true);
@@ -39,7 +40,11 @@ export default function GastoForm({ onSuccess }: { onSuccess?: () => void }) {
 
       if (res.ok) {
         setForm({ monto: "", categoria: "", fecha: "", descripcion: "" });
+        setSuccessMessage("✅ Gasto agregado correctamente."); // <--- NUEVO
         if (onSuccess) onSuccess();
+
+        // Eliminar mensaje después de 3 segundos
+        setTimeout(() => setSuccessMessage(""), 3000);
       }
     } catch (error) {
       console.error("Error al guardar el gasto", error);
@@ -53,9 +58,15 @@ export default function GastoForm({ onSuccess }: { onSuccess?: () => void }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 p-4 bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-100 rounded shadow w-full max-w-md border border-gray-200 dark:border-gray-700"
+      className="space-y-4 p-4 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded shadow w-full max-w-md border-gray-200 dark:border-gray-700"
     >
       <h2 className="text-xl font-bold">Registrar Gasto</h2>
+
+      {successMessage && (
+        <div className="text-green-600 bg-green-100 dark:bg-green-900 p-2 rounded text-sm">
+          {successMessage}
+        </div>
+      )}
 
       <input
         type="number"
@@ -64,7 +75,7 @@ export default function GastoForm({ onSuccess }: { onSuccess?: () => void }) {
         value={form.monto}
         onChange={handleChange}
         required
-        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
+        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
       />
 
       <select
@@ -72,7 +83,7 @@ export default function GastoForm({ onSuccess }: { onSuccess?: () => void }) {
         value={form.categoria}
         onChange={handleChange}
         required
-        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
+        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
       >
         <option value="">Selecciona categoría</option>
         <option value="Comida">Comida</option>
@@ -87,7 +98,7 @@ export default function GastoForm({ onSuccess }: { onSuccess?: () => void }) {
         value={form.fecha}
         onChange={handleChange}
         required
-        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
+        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
       />
 
       <textarea
@@ -96,13 +107,13 @@ export default function GastoForm({ onSuccess }: { onSuccess?: () => void }) {
         value={form.descripcion}
         onChange={handleChange}
         required
-        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
+        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
       />
 
       <button
         type="submit"
         disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition"
+        className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded w-full"
       >
         {loading ? "Guardando..." : "Guardar Gasto"}
       </button>
