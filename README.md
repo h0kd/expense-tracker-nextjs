@@ -24,7 +24,7 @@ Una aplicación web fullstack para registrar, visualizar y exportar tus gastos d
 
 ## 📸 Capturas de pantalla
 
-![Dashboard principal](./public/dashboard1.png)
+![Dashboard principal](./public/dashboardInicio.png)
 
 ![Dashboard tabla](./public/dashboardTable.png)
 
@@ -77,6 +77,4 @@ Este proyecto es de uso libre para tu portafolio personal o como referencia de d
 
 ---
 
-Construido con pasión por h0kd
-
-✨
+Construido con pasión por h0kd ✨
