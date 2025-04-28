@@ -35,7 +35,7 @@ Una aplicación web fullstack para registrar, visualizar y exportar tus gastos d
 1. Clona este repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/expense-tracker.git
+git clone https://github.com/h0kd/expense-tracker-nextjs.git
 cd expense-tracker
 ```
 
