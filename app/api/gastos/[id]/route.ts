@@ -42,7 +42,7 @@ function getIdFromRequestUrl(url: string): string | null {
     const parsedUrl = new URL(url);
     const parts = parsedUrl.pathname.split("/");
     return parts[parts.length - 1] || null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
