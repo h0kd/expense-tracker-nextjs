@@ -135,7 +135,10 @@ export default function Home() {
 
         {/* Gráficos */}
         <div className="lg:col-span-3">
-          <GastosResumen gastos={gastosFiltrados} />
+          <GastosResumen
+            gastos={gastosFiltrados}
+            onImportSuccess={fetchGastos}
+          />
         </div>
 
         {/* Formulario */}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "sonner"; // ← usa sonner
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
@@ -31,7 +31,8 @@ export default function RootLayout({
           min-h-screen
         `}
       >
-        <Toaster position="top-right" reverseOrder={false} />
+        {/* Toaster de Sonner */}
+        <Toaster position="top-right" theme="system" richColors closeButton />
         {children}
       </body>
     </html>

@@ -1,9 +1,10 @@
+"use client";
+
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
-// Definición de tipo Gasto
 export type Gasto = {
   id: number;
   monto: number;
@@ -30,7 +31,7 @@ export default function GastosTable({ gastos, fetchGastos }: GastosTableProps) {
       });
 
       if (res.ok) {
-        toast.success("Gasto eliminado correctamente.");
+        toast.success("🗑️ Gasto eliminado correctamente.");
         setConfirmarId(null);
         fetchGastos();
       }
@@ -51,7 +52,7 @@ export default function GastosTable({ gastos, fetchGastos }: GastosTableProps) {
       });
 
       if (res.ok) {
-        toast.success("Gasto editado correctamente.");
+        toast.success("✏️ Gasto editado correctamente.");
         setEditando(null);
         fetchGastos();
       }
@@ -60,10 +61,13 @@ export default function GastosTable({ gastos, fetchGastos }: GastosTableProps) {
     }
   };
 
-  if (gastos.length === 0)
+  if (gastos.length === 0) {
     return (
-      <p className="text-center text-gray-500">No hay gastos registrados.</p>
+      <p className="text-center text-gray-500 dark:text-gray-400">
+        No hay gastos registrados.
+      </p>
     );
+  }
 
   return (
     <div className="w-full overflow-auto mt-8">
@@ -177,7 +181,7 @@ export default function GastosTable({ gastos, fetchGastos }: GastosTableProps) {
         </Dialog.Portal>
       </Dialog.Root>
 
-      {/* Tabla de gastos */}
+      {/* Tabla */}
       <table className="min-w-full table-auto border-collapse text-gray-800 dark:text-gray-100">
         <thead>
           <tr className="bg-gray-800 text-white">

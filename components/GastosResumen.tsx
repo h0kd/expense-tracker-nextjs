@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import * as XLSX from "xlsx";
+import ExcelImportForm from "@/components/ExcelImportForm";
 
 ChartJS.register(
   CategoryScale,
@@ -31,9 +32,13 @@ type Gasto = {
 
 interface GastosResumenProps {
   gastos: Gasto[];
+  onImportSuccess?: () => void;
 }
 
-export default function GastosResumen({ gastos }: GastosResumenProps) {
+export default function GastosResumen({
+  gastos,
+  onImportSuccess,
+}: GastosResumenProps) {
   const porCategoria = gastos.reduce((acc: Record<string, number>, g) => {
     acc[g.categoria] = (acc[g.categoria] || 0) + g.monto;
     return acc;
@@ -77,6 +82,8 @@ export default function GastosResumen({ gastos }: GastosResumenProps) {
         >
           Exportar Excel
         </button>
+
+        <ExcelImportForm onSuccess={onImportSuccess} />
       </div>
 
       {/* Gráficas */}
