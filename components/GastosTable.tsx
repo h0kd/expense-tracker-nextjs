@@ -1,7 +1,7 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
@@ -22,14 +22,42 @@ export default function GastosTable({ gastos, fetchGastos }: GastosTableProps) {
   const [confirmarId, setConfirmarId] = useState<number | null>(null);
   const [editando, setEditando] = useState<Gasto | null>(null);
 
+  // sorting state
+  const [sortColumn, setSortColumn] = useState<
+    "monto" | "categoria" | "fecha" | ""
+  >("");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
+  const handleSort = (column: "monto" | "categoria" | "fecha") => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
+    }
+  };
+
+  const sortedGastos = useMemo(() => {
+    if (!sortColumn) return gastos;
+    return [...gastos].sort((a, b) => {
+      let aVal: string | number = a[sortColumn];
+      let bVal: string | number = b[sortColumn];
+      if (sortColumn === "fecha") {
+        aVal = a.fecha;
+        bVal = b.fecha;
+      }
+      if (aVal < bVal) return sortDirection === "asc" ? -1 : 1;
+      if (aVal > bVal) return sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
+  }, [gastos, sortColumn, sortDirection]);
+
   const handleDelete = async () => {
     if (!confirmarId) return;
-
     try {
       const res = await fetch(`/api/gastos/${confirmarId}`, {
         method: "DELETE",
       });
-
       if (res.ok) {
         toast.success("🗑️ Gasto eliminado correctamente.");
         setConfirmarId(null);
@@ -43,14 +71,12 @@ export default function GastosTable({ gastos, fetchGastos }: GastosTableProps) {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editando) return;
-
     try {
       const res = await fetch(`/api/gastos/${editando.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editando),
       });
-
       if (res.ok) {
         toast.success("✏️ Gasto editado correctamente.");
         setEditando(null);
@@ -75,7 +101,7 @@ export default function GastosTable({ gastos, fetchGastos }: GastosTableProps) {
         Gastos Registrados
       </h2>
 
-      {/* Dialog Eliminar */}
+      {/* Delete Dialog */}
       <Dialog.Root
         open={confirmarId !== null}
         onOpenChange={() => setConfirmarId(null)}
@@ -109,7 +135,7 @@ export default function GastosTable({ gastos, fetchGastos }: GastosTableProps) {
         </Dialog.Portal>
       </Dialog.Root>
 
-      {/* Dialog Editar */}
+      {/* Edit Dialog */}
       <Dialog.Root
         open={editando !== null}
         onOpenChange={() => setEditando(null)}
@@ -134,15 +160,27 @@ export default function GastosTable({ gastos, fetchGastos }: GastosTableProps) {
                   className="w-full p-2 border rounded text-gray-800 dark:bg-gray-800 dark:text-gray-100"
                   placeholder="Monto"
                 />
-                <input
-                  type="text"
+
+                {/* categoría ahora como select */}
+                <select
                   value={editando.categoria}
                   onChange={(e) =>
                     setEditando({ ...editando, categoria: e.target.value })
                   }
                   className="w-full p-2 border rounded text-gray-800 dark:bg-gray-800 dark:text-gray-100"
-                  placeholder="Categoría"
-                />
+                >
+                  <option value="Comida">Comida</option>
+                  <option value="Transporte">Transporte</option>
+                  <option value="Servicios">Servicios</option>
+                  <option value="Tecnología">Tecnología</option>
+                  <option value="Entretenimiento">Entretenimiento</option>
+                  <option value="Transferencias">Transferencias</option>
+                  <option value="Comisiones/Arte">Comisiones/Arte</option>
+                  <option value="Cultura">Cultura</option>
+                  <option value="Licencias/Trabajo">Licencias/Trabajo</option>
+                  <option value="Otros">Otros</option>
+                </select>
+
                 <input
                   type="date"
                   value={editando.fecha.slice(0, 10)}
@@ -151,6 +189,7 @@ export default function GastosTable({ gastos, fetchGastos }: GastosTableProps) {
                   }
                   className="w-full p-2 border rounded text-gray-800 dark:bg-gray-800 dark:text-gray-100"
                 />
+
                 <textarea
                   value={editando.descripcion}
                   onChange={(e) =>
@@ -159,6 +198,7 @@ export default function GastosTable({ gastos, fetchGastos }: GastosTableProps) {
                   className="w-full p-2 border rounded text-gray-800 dark:bg-gray-800 dark:text-gray-100"
                   placeholder="Descripción"
                 />
+
                 <div className="flex justify-end gap-2 mt-4">
                   <Dialog.Close asChild>
                     <button
@@ -181,49 +221,72 @@ export default function GastosTable({ gastos, fetchGastos }: GastosTableProps) {
         </Dialog.Portal>
       </Dialog.Root>
 
-      {/* Tabla */}
-      <table className="min-w-full table-auto border-collapse text-gray-800 dark:text-gray-100">
-        <thead>
-          <tr className="bg-gray-800 text-white">
-            <th className="px-3 py-2">Monto</th>
-            <th className="px-3 py-2">Categoría</th>
-            <th className="px-3 py-2">Fecha</th>
-            <th className="px-3 py-2">Descripción</th>
-            <th className="px-3 py-2">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {gastos.map((gasto) => (
-            <tr
-              key={gasto.id}
-              className="border-b hover:bg-gray-50 dark:hover:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-900"
-            >
-              <td className="px-3 py-2">${gasto.monto.toLocaleString()}</td>
-              <td className="px-3 py-2">{gasto.categoria}</td>
-              <td className="px-3 py-2">
-                {new Date(gasto.fecha).toLocaleDateString()}
-              </td>
-              <td className="px-3 py-2 max-w-[200px] truncate">
-                {gasto.descripcion}
-              </td>
-              <td className="px-3 py-2 space-x-2">
-                <button
-                  onClick={() => setEditando(gasto)}
-                  className="text-blue-600 hover:underline"
-                >
-                  Editar
-                </button>
-                <button
-                  onClick={() => setConfirmarId(gasto.id)}
-                  className="text-red-600 hover:underline"
-                >
-                  Eliminar
-                </button>
-              </td>
+      {/* Table */}
+      <div className="max-h-96 overflow-y-auto">
+        <table className="min-w-full table-auto border-collapse text-gray-800 dark:text-gray-100">
+          <thead>
+            <tr className="bg-gray-800 text-white">
+              <th
+                className="px-3 py-2 cursor-pointer"
+                onClick={() => handleSort("monto")}
+              >
+                Monto
+                {sortColumn === "monto" &&
+                  (sortDirection === "asc" ? " ▲" : " ▼")}
+              </th>
+              <th
+                className="px-3 py-2 cursor-pointer"
+                onClick={() => handleSort("categoria")}
+              >
+                Categoría
+                {sortColumn === "categoria" &&
+                  (sortDirection === "asc" ? " ▲" : " ▼")}
+              </th>
+              <th
+                className="px-3 py-2 cursor-pointer"
+                onClick={() => handleSort("fecha")}
+              >
+                Fecha
+                {sortColumn === "fecha" &&
+                  (sortDirection === "asc" ? " ▲" : " ▼")}
+              </th>
+              <th className="px-3 py-2">Descripción</th>
+              <th className="px-3 py-2">Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {sortedGastos.map((gasto) => (
+              <tr
+                key={gasto.id}
+                className="border-b hover:bg-gray-50 dark:hover:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-900"
+              >
+                <td className="px-3 py-2">${gasto.monto.toLocaleString()}</td>
+                <td className="px-3 py-2">{gasto.categoria}</td>
+                <td className="px-3 py-2">
+                  {new Date(gasto.fecha).toLocaleDateString()}
+                </td>
+                <td className="px-3 py-2 max-w-[200px] truncate">
+                  {gasto.descripcion}
+                </td>
+                <td className="px-3 py-2 space-x-2">
+                  <button
+                    onClick={() => setEditando(gasto)}
+                    className="text-blue-600 hover:underline"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => setConfirmarId(gasto.id)}
+                    className="text-red-600 hover:underline"
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
