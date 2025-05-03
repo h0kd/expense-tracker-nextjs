@@ -28,6 +28,21 @@ export default function Home() {
     fetchGastos();
   }, []);
 
+  const monthNames = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+
   const gastosFiltrados = gastos.filter((g) => {
     const fecha = new Date(g.fecha);
     const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
@@ -63,10 +78,10 @@ export default function Home() {
                 <option>Todos</option>
                 {[
                   ...new Set(
-                    gastos.map((g) => new Date(g.fecha).getFullYear())
+                    gastos.map((g) => new Date(g.fecha).getFullYear().toString())
                   ),
                 ]
-                  .sort((a, b) => b - a)
+                  .sort((a, b) => parseInt(b) - parseInt(a))
                   .map((a) => (
                     <option key={a}>{a}</option>
                   ))}
@@ -87,11 +102,14 @@ export default function Home() {
                 className="p-2 border rounded text-sm bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 dark:border-gray-600"
               >
                 <option>Todos</option>
-                {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
-                  <option key={m} value={m.toString().padStart(2, "0")}>
-                    {m.toString().padStart(2, "0")}
-                  </option>
-                ))}
+                {monthNames.map((nombre, idx) => {
+                  const value = (idx + 1).toString().padStart(2, "0");
+                  return (
+                    <option key={value} value={value}>
+                      {nombre}
+                    </option>
+                  );
+                })}
               </select>
             </div>
 
@@ -135,10 +153,7 @@ export default function Home() {
 
         {/* Gráficos */}
         <div className="lg:col-span-3">
-          <GastosResumen
-            gastos={gastosFiltrados}
-            onImportSuccess={fetchGastos}
-          />
+          <GastosResumen gastos={gastosFiltrados} onImportSuccess={fetchGastos} />
         </div>
 
         {/* Formulario */}
